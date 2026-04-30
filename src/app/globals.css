@@ -1,0 +1,65 @@
+@import "tailwindcss";
+@config "../../tailwind.config.ts";
+
+:root {
+  /* Colors */
+  --primary: #3525cd;
+  --primary-container: #4f46e5;
+  --on-primary: #ffffff;
+  --secondary: #006591;
+  --secondary-container: #39b8fd;
+  --on-secondary: #ffffff;
+  --tertiary: #684000;
+  --on-tertiary: #ffffff;
+  
+  --background: #ffffff;
+  --on-background: #0b1c30;
+  --surface: #ffffff;
+  --on-surface: #0b1c30;
+  --surface-variant: #f8fafc;
+  --on-surface-variant: #464555;
+  
+  --text-heading: #0F172A;
+  --text-body: #475569;
+  
+  --outline: #94a3b8;
+  --outline-variant: #e2e8f0;
+  
+  --error: #ba1a1a;
+  --on-error: #ffffff;
+  
+  --status-success: #10B981;
+  --status-error: #EF4444;
+  --status-info: #3B82F6;
+  
+  /* Typography */
+  --font-heading: var(--font-plus-jakarta-sans), sans-serif;
+  --font-body: var(--font-inter), sans-serif;
+}
+
+html, body {
+  background-color: var(--background);
+  color: var(--text-body);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--text-heading);
+}
+
+@layer utilities {
+  .container {
+    width: 100%;
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  @media (min-width: 768px) {
+    .container {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+}
