@@ -1,33 +1,37 @@
 import React from 'react';
 import Link from 'next/link';
+import { ProductCardProps } from '../types/product';
 
-interface ProductCardProps {
-  id: string;
-  name: string;
-  price: number;
-  image: string;
-  category: string;
-}
-
-const ProductCard: React.FC<ProductCardProps> = ({ id, name, price, image, category }) => {
+/**
+ * ProductCard component for displaying a product in a grid or list.
+ * 
+ * @param {ProductCardProps} props - The properties for the ProductCard component.
+ * @returns {React.JSX.Element} The rendered product card component.
+ */
+const ProductCard: React.FC<ProductCardProps> = ({ id, name, price, image, category, badge }) => {
   return (
-    <div className="flex flex-col gap-4 transition-transform duration-300 ease-in-out hover:-translate-y-1 group">
-      <div className="relative aspect-square bg-slate-100 rounded-xl overflow-hidden">
-        <img src={image} alt={name} className="w-full h-full object-cover" />
+    <div className="flex flex-col bg-white border border-slate-100 rounded-3xl shadow-sm transition-transform duration-300 ease-in-out hover:-translate-y-1 group overflow-hidden">
+      <div className="relative aspect-square bg-slate-50 w-full overflow-hidden">
+        {category === 'IN STOCK' && (
+          <span className="absolute top-4 left-4 bg-emerald-500 text-white text-[10px] font-bold px-3 py-1 rounded-full tracking-wider z-20">IN STOCK</span>
+        )}
+        <img src={image} alt={name} className="absolute inset-0 w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-105" />
         <Link href={`/product/${id}`} className="absolute inset-0 z-10" />
-        <button className="absolute bottom-4 left-4 right-4 bg-white text-slate-800 p-3 rounded-lg font-semibold text-sm opacity-0 translate-y-2.5 transition-all duration-300 ease-in-out shadow-md group-hover:opacity-100 group-hover:translate-y-0 z-20">
-          Quick Add
-        </button>
       </div>
-      <div className="flex flex-col gap-1">
-        <span className="text-xs uppercase tracking-wider text-slate-400 font-semibold">{category}</span>
-        <Link href={`/product/${id}`} className="no-underline">
-          <h3 className="text-lg font-semibold text-slate-900">{name}</h3>
+      <div className="flex flex-col p-5">
+        <Link href={`/product/${id}`} className="no-underline z-10 relative mb-4">
+          <h3 className="text-[15px] font-semibold text-slate-700 hover:text-primary transition-colors line-clamp-1">{name}</h3>
         </Link>
-        <p className="font-bold text-primary text-lg">${price.toFixed(2)}</p>
+        <div className="flex items-center justify-between mt-auto">
+          <p className="font-bold text-primary text-base">${price?.toFixed(2)}</p>
+          <button className="w-8 h-8 rounded-full bg-indigo-50 text-primary flex items-center justify-center font-medium transition-colors hover:bg-primary hover:text-white z-20">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          </button>
+        </div>
       </div>
     </div>
   );
 };
 
 export default ProductCard;
+
