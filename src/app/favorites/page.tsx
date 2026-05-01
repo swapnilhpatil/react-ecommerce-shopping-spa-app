@@ -5,14 +5,16 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import ProductCard from '../../components/ProductCard';
 import Link from 'next/link';
+import { MOCK_FAVORITES } from '../../constants/products';
+import { Product } from '../../types/product';
 
+/**
+ * Favorites page displaying the user's saved items.
+ * 
+ * @returns {React.JSX.Element} The rendered Favorites page.
+ */
 export default function Favorites() {
-  // Mock data for favorites
-  const [favorites, setFavorites] = useState([
-    { id: '1', name: 'Elite Sound Over-Ear', price: 299, image: '/images/headphones.png', category: 'AUDIO TECH' },
-    { id: '2', name: 'Pro-Runner Speedster', price: 120, image: '/images/sneaker.png', category: 'VELOCITY' },
-    { id: '3', name: 'Minimalist Quartz Watch', price: 149, image: '/images/watch.png', category: 'TIMEPIECE' },
-  ]);
+  const [favorites, setFavorites] = useState<Product[]>(MOCK_FAVORITES);
 
   return (
     <main className="bg-slate-50 min-h-screen flex flex-col">

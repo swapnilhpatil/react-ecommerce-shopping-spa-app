@@ -4,32 +4,30 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { MOCK_CART_ITEMS, MOCK_FBT_ITEMS } from '../../constants/products';
+import { Product } from '../../types/product';
+import { TrashIcon, LockIcon, PlusIcon, CloseIcon } from '../../components/icons';
 
+/**
+ * Cart page for viewing and managing items before checkout.
+ * 
+ * @returns {React.JSX.Element} The rendered Cart page.
+ */
 export default function Cart() {
-  const [items, setItems] = useState([
-    { id: '1', name: 'Stratos Performance V2', category: 'ELITE FOOTWEAR', price: 189.00, quantity: 1, image: '/images/mens.png' },
-    { id: '2', name: 'Lumina Watch Series 4', category: 'TECH WEARABLES', price: 349.00, quantity: 1, image: '/images/watch.png' },
-    { id: '3', name: 'Zenith Noise Cancelling Headphones', category: 'AUDIO PRO', price: 299.00, quantity: 1, image: '/images/headphones.png' },
-  ]);
+  const [items, setItems] = useState<Product[]>(MOCK_CART_ITEMS);
+  const fbtItems = MOCK_FBT_ITEMS;
 
-  const fbtItems = [
-    { id: 'f1', name: 'Heavy-Duty Charging Cable', category: 'ACCESSORIES', price: 24.99, image: '/images/charge_stand.png' },
-    { id: 'f2', name: 'Pro Screen Cleaning Kit', category: 'CARE', price: 15.00, image: '/images/cat_skincare.png' },
-    { id: 'f3', name: 'Travel Storage Case', category: 'PROTECTION', price: 45.00, image: '/images/womens.png' },
-    { id: 'f4', name: 'Wireless Charging Pad Pro', category: 'POWER', price: 59.99, image: '/images/purifier.png' },
-  ];
-
-  const updateQuantity = (id: string, delta: number) => {
+  const updateQuantity = (id: string | number, delta: number) => {
     setItems(items.map(item => 
-      item.id === id ? { ...item, quantity: Math.max(1, item.quantity + delta) } : item
+      item.id === id ? { ...item, quantity: Math.max(1, (item.quantity || 1) + delta) } : item
     ));
   };
 
-  const removeItem = (id: string) => {
+  const removeItem = (id: string | number) => {
     setItems(items.filter(item => item.id !== id));
   };
 
-  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const subtotal = items.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
   const tax = subtotal * 0.075; // 7.5% approx to match $62.78 for $837
   const total = subtotal + tax;
 
@@ -62,15 +60,15 @@ export default function Cart() {
                     <div className="flex items-center justify-between mt-auto">
                       <div className="flex items-center border border-slate-200 rounded-full bg-white h-11 px-1">
                         <button onClick={() => updateQuantity(item.id, -1)} className="w-9 h-9 flex items-center justify-center text-slate-500 rounded-full hover:bg-slate-100 transition-colors">-</button>
-                        <span className="w-10 text-center font-bold text-sm text-slate-900">{item.quantity}</span>
+                        <span className="font-bold text-slate-700 w-4 text-center">{item.quantity || 1}</span>
                         <button onClick={() => updateQuantity(item.id, 1)} className="w-9 h-9 flex items-center justify-center text-slate-500 rounded-full hover:bg-slate-100 transition-colors">+</button>
                       </div>
                       <span className="text-2xl font-extrabold text-slate-900">${item.price.toFixed(2)}</span>
                     </div>
                   </div>
 
-                  <button onClick={() => removeItem(item.id)} className="absolute top-6 right-6 text-slate-300 hover:text-red-500 hover:bg-red-50 p-2 rounded-full transition-colors" aria-label="Remove item">
-                    <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                  <button onClick={() => removeItem(item.id as string)} className="absolute top-6 right-6 text-slate-300 hover:text-red-500 hover:bg-red-50 p-2 rounded-full transition-colors" aria-label="Remove item">
+                    <TrashIcon size={18} />
                   </button>
                 </div>
               ))}
@@ -116,7 +114,7 @@ export default function Cart() {
                 </Link>
 
                 <div className="flex justify-center items-center gap-2 mt-6 text-xs font-bold text-slate-400 tracking-wider">
-                  <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  <LockIcon size={14} />
                   SECURE SSL ENCRYPTION
                 </div>
               </div>
@@ -141,8 +139,12 @@ export default function Cart() {
               <p className="text-slate-500 font-medium">Enhance your experience with these popular additions.</p>
             </div>
             <div className="flex gap-2">
-              <button className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-600 transition-colors hover:border-primary hover:text-primary hover:bg-slate-50" aria-label="Previous">&larr;</button>
-              <button className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-600 transition-colors hover:border-primary hover:text-primary hover:bg-slate-50" aria-label="Next">&rarr;</button>
+              <button className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-600 transition-colors hover:border-primary hover:text-primary hover:bg-slate-50" aria-label="Previous">
+                &larr;
+              </button>
+              <button className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-600 transition-colors hover:border-primary hover:text-primary hover:bg-slate-50" aria-label="Next">
+                &rarr;
+              </button>
             </div>
           </div>
 
@@ -152,7 +154,7 @@ export default function Cart() {
                 <div className="relative h-[160px] bg-white rounded-xl mb-4 flex items-center justify-center">
                   <img src={item.image} alt={item.name} className="max-w-[70%] max-h-[70%] object-contain" />
                   <button className="absolute top-3 right-3 text-slate-300 hover:text-red-500 transition-colors bg-slate-50/50 backdrop-blur w-8 h-8 rounded-full flex items-center justify-center">
-                    <svg width="16" height="16" fill="currentColor" stroke="currentColor" strokeWidth="1" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                    <CloseIcon size={16} />
                   </button>
                 </div>
                 <div className="flex flex-col flex-1">
@@ -161,7 +163,7 @@ export default function Cart() {
                   <div className="flex justify-between items-center mt-auto pt-4 border-t border-slate-200">
                     <span className="font-extrabold text-primary">${item.price.toFixed(2)}</span>
                     <button className="w-8 h-8 bg-slate-900 text-white rounded-full flex items-center justify-center transition-transform hover:scale-110">
-                      <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                      <PlusIcon size={14} />
                     </button>
                   </div>
                 </div>
