@@ -111,8 +111,8 @@ export default function Catalog() {
                     <button className="absolute top-4 right-4 bg-white/80 backdrop-blur w-9 h-9 rounded-full flex items-center justify-center text-slate-400 transition-colors hover:text-red-500 hover:bg-white z-20">
                       <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" /></svg>
                     </button>
-                    <div className="relative h-[240px] bg-slate-50 flex items-center justify-center p-4">
-                      <img src={p.image} alt={p.name as string} className="w-full h-full object-contain relative z-10" />
+                    <div className="relative h-[240px] bg-slate-50 flex items-center justify-center overflow-hidden">
+                      <img src={p.image} alt={p.name as string} className="w-full h-full object-cover relative z-10 transition-transform duration-500 group-hover:scale-105" />
                       <Link href={`/product/${p.id}`} className="absolute inset-0 z-10" />
                     </div>
                     <div className="p-6 flex flex-col flex-1 gap-2">

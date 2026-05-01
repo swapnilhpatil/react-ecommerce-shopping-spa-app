@@ -15,7 +15,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, name, price, image, categ
         {category === 'IN STOCK' && (
           <span className="absolute top-4 left-4 bg-emerald-500 text-white text-[10px] font-bold px-3 py-1 rounded-full tracking-wider z-20">IN STOCK</span>
         )}
-        <img src={image} alt={name} className="absolute inset-0 w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-105" />
+        <img src={image} alt={name} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
         <Link href={`/product/${id}`} className="absolute inset-0 z-10" />
       </div>
       <div className="flex flex-col p-5">
